@@ -1,0 +1,8 @@
+[submodule "msg-proto"]
+	path = msg-proto
+	url = git@github.com:ArtyomArtamonov/msg-proto.git
+	branch = master
+[submodule "appengine"]
+	path = appengine
+	url = git@github.com:dart-lang/appengine.git
+	branch = master

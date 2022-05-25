@@ -1,33 +1,53 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:msnger/logic/auth.dart';
 
+export 'home_route.dart';
 export 'login_route.dart';
 
+import 'home_route.dart';
 import 'login_route.dart';
 
-final goRouterProvider = Provider((ref) => GoRouter(
-  routes: <GoRoute>[
-    GoRoute(
-      path: '/',
-      builder: (BuildContext context, GoRouterState state) => const LoginRoute(),
-    ),
-    GoRoute(
-      path: '/page2',
-      builder: (BuildContext context, GoRouterState state) => const Page2Screen(),
-    ),
-  ],
-  redirect: (state) {
-      // if the user is not logged in, they need to login
-      final loggedIn = loginInfo.loggedIn;
-      final loggingIn = state.subloc == '/login';
-      if (!loggedIn) return loggingIn ? null : '/login';
+final goRouterProvider = Provider(
+  (ref) {
+    final authState = ref.watch(authStateProvider.notifier);
 
-      // if the user is logged in but still on the login page, send them to
-      // the home page
-      if (loggingIn) return '/';
+    final router = GoRouter(
+      initialLocation: '/login',
+      routes: <GoRoute>[
+        GoRoute(
+          path: '/',
+          builder: (BuildContext context, GoRouterState state) =>
+              const HomeRoute(),
+        ),
+        GoRoute(
+          path: '/login',
+          builder: (BuildContext context, GoRouterState state) =>
+              const LoginRoute(),
+        ),
+      ],
+      redirect: (state) {
+        final loggedIn = authState.loggedIn;
+        final loggingIn = state.subloc == '/login';
+        if (loggedIn && loggingIn) {
+          return '/';
+        }
+        if (!loggedIn && !loggingIn) {
+          return '/login';
+        }
+        return null;
+      },
+    );
 
-      // no need to redirect at all
-      return null;
+    authState.addListener((state) {
+      if (authState.loggedIn) {
+        router.go('/');
+      } else {
+        router.go('/login');
+      }
+    });
+
+    return router;
   },
-));
+);

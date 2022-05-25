@@ -1,0 +1,6 @@
+{
+   "files.exclude": {
+      "appengine": true,
+      "lib/model/proto/google": true,
+   },
+}
