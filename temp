@@ -1,0 +1,8 @@
+// create room
+{
+    "name": "test",
+    "user_ids": [
+        "f86a3090-33aa-41d2-bc9b-c9ee77add769"
+    ]
+}
+

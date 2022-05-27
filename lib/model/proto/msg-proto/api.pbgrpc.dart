@@ -32,6 +32,12 @@ class ApiServiceClient extends $grpc.Client {
           ($0.MessageRequest value) => value.writeToBuffer(),
           ($core.List<$core.int> value) =>
               $0.MessageResponse.fromBuffer(value));
+  static final _$listMessages =
+      $grpc.ClientMethod<$0.ListMessagesRequest, $0.ListMessagesResponse>(
+          '/api.ApiService/ListMessages',
+          ($0.ListMessagesRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) =>
+              $0.ListMessagesResponse.fromBuffer(value));
 
   ApiServiceClient($grpc.ClientChannel channel,
       {$grpc.CallOptions? options,
@@ -54,6 +60,12 @@ class ApiServiceClient extends $grpc.Client {
       $0.MessageRequest request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$sendMessage, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.ListMessagesResponse> listMessages(
+      $0.ListMessagesRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$listMessages, request, options: options);
   }
 }
 
@@ -82,6 +94,15 @@ abstract class ApiServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.MessageRequest.fromBuffer(value),
         ($0.MessageResponse value) => value.writeToBuffer()));
+    $addMethod(
+        $grpc.ServiceMethod<$0.ListMessagesRequest, $0.ListMessagesResponse>(
+            'ListMessages',
+            listMessages_Pre,
+            false,
+            false,
+            ($core.List<$core.int> value) =>
+                $0.ListMessagesRequest.fromBuffer(value),
+            ($0.ListMessagesResponse value) => value.writeToBuffer()));
   }
 
   $async.Future<$0.CreateRoomStatus> createRoom_Pre($grpc.ServiceCall call,
@@ -99,10 +120,18 @@ abstract class ApiServiceBase extends $grpc.Service {
     return sendMessage(call, await request);
   }
 
+  $async.Future<$0.ListMessagesResponse> listMessages_Pre(
+      $grpc.ServiceCall call,
+      $async.Future<$0.ListMessagesRequest> request) async {
+    return listMessages(call, await request);
+  }
+
   $async.Future<$0.CreateRoomStatus> createRoom(
       $grpc.ServiceCall call, $0.CreateRoomRequest request);
   $async.Future<$0.ListRoomsResponse> listRooms(
       $grpc.ServiceCall call, $0.ListRoomsRequest request);
   $async.Future<$0.MessageResponse> sendMessage(
       $grpc.ServiceCall call, $0.MessageRequest request);
+  $async.Future<$0.ListMessagesResponse> listMessages(
+      $grpc.ServiceCall call, $0.ListMessagesRequest request);
 }

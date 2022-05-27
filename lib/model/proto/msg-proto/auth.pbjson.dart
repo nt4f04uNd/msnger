@@ -8,7 +8,6 @@
 import 'dart:core' as $core;
 import 'dart:convert' as $convert;
 import 'dart:typed_data' as $typed_data;
-
 @$core.Deprecated('Use loginRequestDescriptor instead')
 const LoginRequest$json = const {
   '1': 'LoginRequest',
@@ -19,8 +18,7 @@ const LoginRequest$json = const {
 };
 
 /// Descriptor for `LoginRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List loginRequestDescriptor = $convert.base64Decode(
-    'CgxMb2dpblJlcXVlc3QSGgoIdXNlcm5hbWUYASABKAlSCHVzZXJuYW1lEhoKCHBhc3N3b3JkGAIgASgJUghwYXNzd29yZA==');
+final $typed_data.Uint8List loginRequestDescriptor = $convert.base64Decode('CgxMb2dpblJlcXVlc3QSGgoIdXNlcm5hbWUYASABKAlSCHVzZXJuYW1lEhoKCHBhc3N3b3JkGAIgASgJUghwYXNzd29yZA==');
 @$core.Deprecated('Use registerRequestDescriptor instead')
 const RegisterRequest$json = const {
   '1': 'RegisterRequest',
@@ -31,8 +29,7 @@ const RegisterRequest$json = const {
 };
 
 /// Descriptor for `RegisterRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List registerRequestDescriptor = $convert.base64Decode(
-    'Cg9SZWdpc3RlclJlcXVlc3QSGgoIdXNlcm5hbWUYASABKAlSCHVzZXJuYW1lEhoKCHBhc3N3b3JkGAIgASgJUghwYXNzd29yZA==');
+final $typed_data.Uint8List registerRequestDescriptor = $convert.base64Decode('Cg9SZWdpc3RlclJlcXVlc3QSGgoIdXNlcm5hbWUYASABKAlSCHVzZXJuYW1lEhoKCHBhc3N3b3JkGAIgASgJUghwYXNzd29yZA==');
 @$core.Deprecated('Use refreshRequestDescriptor instead')
 const RefreshRequest$json = const {
   '1': 'RefreshRequest',
@@ -42,23 +39,14 @@ const RefreshRequest$json = const {
 };
 
 /// Descriptor for `RefreshRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List refreshRequestDescriptor = $convert.base64Decode(
-    'Cg5SZWZyZXNoUmVxdWVzdBIjCg1yZWZyZXNoX3Rva2VuGAEgASgJUgxyZWZyZXNoVG9rZW4=');
+final $typed_data.Uint8List refreshRequestDescriptor = $convert.base64Decode('Cg5SZWZyZXNoUmVxdWVzdBIjCg1yZWZyZXNoX3Rva2VuGAEgASgJUgxyZWZyZXNoVG9rZW4=');
 @$core.Deprecated('Use tokenResponseDescriptor instead')
 const TokenResponse$json = const {
   '1': 'TokenResponse',
   '2': const [
-    const {
-      '1': 'token',
-      '3': 1,
-      '4': 1,
-      '5': 11,
-      '6': '.model.Token',
-      '10': 'token'
-    },
+    const {'1': 'token', '3': 1, '4': 1, '5': 11, '6': '.model.Token', '10': 'token'},
   ],
 };
 
 /// Descriptor for `TokenResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List tokenResponseDescriptor = $convert.base64Decode(
-    'Cg1Ub2tlblJlc3BvbnNlEiIKBXRva2VuGAEgASgLMgwubW9kZWwuVG9rZW5SBXRva2Vu');
+final $typed_data.Uint8List tokenResponseDescriptor = $convert.base64Decode('Cg1Ub2tlblJlc3BvbnNlEiIKBXRva2VuGAEgASgLMgwubW9kZWwuVG9rZW5SBXRva2Vu');

@@ -13,11 +13,11 @@ class LoginRoute extends HookConsumerWidget {
     final passwordController = useTextEditingController();
 
     Future<void> handleSubmit() async {
-      final result = await authManager.login(
-        usernameController.text.trim(),
-        passwordController.text.trim(),
-      );
       final scaffoldMessnager = ScaffoldMessenger.of(context);
+      final result = await authManager.login(
+        username: usernameController.text.trim(),
+        password: passwordController.text.trim(),
+      );
       switch (result) {
         case LoginResult.success:
           // show nothing

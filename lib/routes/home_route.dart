@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:msnger/msnger.dart';
 
@@ -9,13 +10,33 @@ class HomeRoute extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final authManager = ref.watch(authManagerProvider);
-    final apiManager = ref.watch(apiManagerProvider);
-    final roomsFuture = useFuture(apiManager.listRooms(null));
-    final roomsResponse = roomsFuture.data;
-    if (roomsResponse == null) {
-      return const Scaffold();
+    final chatManager = ref.watch(chatManagerProvider);
+    final chatsLoading =
+        ref.watch(chatStateProvider.select((value) => value.loading));
+    final chatsError =
+        ref.watch(chatStateProvider.select((value) => value.error));
+    final rooms = ref.watch(chatStateProvider.select((value) => value.rooms));
+    final scrollController = useScrollController();
+
+    useEffect(() {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        chatManager.loadRooms();
+      });
+      scrollController.addListener(() {
+        if (!chatsLoading && scrollController.position.extentAfter < 300) {
+          chatManager.loadRooms();
+        }
+      });
+      return null;
+    }, const []);
+
+    if (chatsError != null) {
+      return const Scaffold(
+        body: Center(child: Text('An error occurred')),
+      );
     }
-    final rooms = roomsResponse.rooms;
+
+    final roomsList = rooms.values.toList();
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -24,11 +45,25 @@ class HomeRoute extends HookConsumerWidget {
         ),
       ),
       body: ListView.builder(
-        itemCount: rooms.length,
-        itemBuilder: (context, index) => ListTile(
-          title: Text(rooms[index].name),
-          onTap: () {},
-        ),
+        controller: scrollController,
+        itemCount: rooms.length + (chatsLoading ? 1 : 0),
+        itemBuilder: (context, index) {
+          if (index == rooms.length) {
+            return const Center(
+              child: Padding(
+                padding: EdgeInsets.all(20.0),
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+          final room = roomsList[index].room;
+          return ListTile(
+            title: Text(room.name),
+            onTap: () {
+              context.push('/chat/${room.id}');
+            },
+          );
+        },
       ),
     );
   }

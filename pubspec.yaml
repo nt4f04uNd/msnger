@@ -16,6 +16,13 @@ dependencies:
   go_router: ^3.1.0
   grpc: ^3.0.2
   hooks_riverpod: ^1.0.3
+  objectbox: ^1.5.0
+  objectbox_flutter_libs: ^1.5.0
+  nt4f04unds_widgets:
+    # path: c:/dev/projects/native/nt4f04unds_widgets/
+    git:
+      url: https://github.com/nt4f04uNd/nt4f04unds_widgets/
+      ref: 3.0.0
 
 dev_dependencies:
   flutter_test:
@@ -24,6 +31,7 @@ dev_dependencies:
   freezed: 2.0.3+1
   flutter_lints: ^2.0.0
   build_runner: ^2.1.11
+  objectbox_generator: ^1.5.0
 
 flutter:
   uses-material-design: true

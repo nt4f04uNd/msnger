@@ -5,4 +5,4 @@ gen:
 	flutter pub run build_runner build --delete-conflicting-outputs
 
 update-modules:
-	git submodule update --recursive --remote
+	git submodule foreach git pull

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:nt4f04unds_widgets/nt4f04unds_widgets.dart';
 
 import 'msnger.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await NFPrefs.initialize();
   runApp(ProviderScope(
     child: Builder(builder: (context) => const App()),
   ));

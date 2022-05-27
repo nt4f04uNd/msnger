@@ -17,6 +17,7 @@ class Api {
   ClientChannel? _messageChannel;
   ApiServiceClient? _apiServiceClient;
   AuthServiceClient? _authServiceClient;
+  MessageServiceClient? _messageServiceClient;
 
   void init() {
     if (_apiChannel == null) {
@@ -27,8 +28,16 @@ class Api {
           credentials: ChannelCredentials.insecure(),
         ),
       );
+      _messageChannel = ClientChannel(
+        Config.messageConfig.url,
+        port: Config.messageConfig.port,
+        options: const ChannelOptions(
+          credentials: ChannelCredentials.insecure(),
+        ),
+      );
       _apiServiceClient = ApiServiceClient(_apiChannel!);
       _authServiceClient = AuthServiceClient(_apiChannel!);
+      _messageServiceClient = MessageServiceClient(_messageChannel!);
     }
   }
 
@@ -39,6 +48,7 @@ class Api {
     _messageChannel = null;
     _apiServiceClient = null;
     _authServiceClient = null;
+    _messageServiceClient = null;
   }
 
   CallOptions _getAuthedCallOptions() => CallOptions(
@@ -47,7 +57,10 @@ class Api {
         },
       );
 
-  Future<TokenResponse> login(String username, String password) {
+  Future<TokenResponse> login({
+    required String username,
+    required String password,
+  }) {
     return _authServiceClient!.login(
       LoginRequest()
         ..username = username
@@ -55,26 +68,56 @@ class Api {
     );
   }
 
-  Future<ListRoomsResponse> listRooms(String? pageToken) {
-    final pageTokenV = StringValue();
-    if (pageToken != null) {
-      pageTokenV.value = pageToken;
+  Future<MessageResponse> sendMessage({
+    required String message,
+    String? userId,
+    String? chatId,
+  }) {
+    assert(userId != null || chatId != null);
+    final request = MessageRequest()..message = message;
+    if (userId != null) {
+      request.userId = userId;
     }
-    return _apiServiceClient!.listRooms(
-      ListRoomsRequest()
-        ..pageSize = 20
-        ..pageToken = pageTokenV,
+    if (chatId != null) {
+      request.roomId = chatId;
+    }
+    return _apiServiceClient!.sendMessage(
+      request,
       options: _getAuthedCallOptions(),
     );
   }
 
-  void initMessageChannel() {
-    _messageChannel = ClientChannel(
-      Config.messageConfig.url,
-      port: Config.messageConfig.port,
-      options: const ChannelOptions(
-        credentials: ChannelCredentials.insecure(),
-      ),
+  Future<ListRoomsResponse> listRooms({required String? nextToken}) async {
+    final request = ListRoomsRequest()..pageSize = 20;
+    if (nextToken != null) {
+      request.nextToken = StringValue()..value = nextToken;
+    }
+    return _apiServiceClient!.listRooms(
+      request,
+      options: _getAuthedCallOptions(),
+    );
+  }
+
+  Future<ListMessagesResponse> listMessages({
+    required Uuid chatId,
+    String? nextToken,
+  }) async {
+    final request = ListMessagesRequest()
+      ..chatId = chatId
+      ..pageSize = 50;
+    if (nextToken != null) {
+      request.nextToken = StringValue()..value = nextToken;
+    }
+    return _apiServiceClient!.listMessages(
+      request,
+      options: _getAuthedCallOptions(),
+    );
+  }
+
+  Stream<MessageStreamResponse> getMessagesStream() {
+    return _messageServiceClient!.getMessages(
+      Empty(),
+      options: _getAuthedCallOptions(),
     );
   }
 }

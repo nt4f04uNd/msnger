@@ -3,9 +3,12 @@ class Config {
 
   static const _dev = true;
 
+  static const _localhost = 'localhost';
+  static const _localIp = '192.168.1.110';
+
   static GrpcApiConfig get apiConfig {
     if (_dev) {
-      return const GrpcApiConfig('localhost', 50051);
+      return const GrpcApiConfig(_localIp, 50051);
     } else {
       throw UnimplementedError();
     }
@@ -13,7 +16,7 @@ class Config {
 
   static GrpcApiConfig get messageConfig {
     if (_dev) {
-      return const GrpcApiConfig('localhost', 50052);
+      return const GrpcApiConfig(_localIp, 50052);
     } else {
       throw UnimplementedError();
     }
